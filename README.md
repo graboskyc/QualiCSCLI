@@ -2,6 +2,7 @@
 This repo is a simple work in progress to make it easy to see available blueprints on a CloudShell system and start those blueprints easily, all via the CLI with a simple syntax.
 
 # Usage
+`
  > python main.py help
 
 usage: main.py [-h] [-q HOST] [-u UN] [-p PW] [-d DOM] [-s INFILE]
@@ -23,21 +24,28 @@ optional arguments:
   -o OUTFILE  name of script in portal
   -i ID       sandbox/blueprint id
   -l LENGTH   sandbox duration length in min. Default is 30
+`
 
 # Sample
 ## First Time
+`
  > python main.py -q http://server:82 -u username -p password -d Global list
 
 +--------------------------------------+---------------+--------------+
 | Blueprint Name                       | Blueprint ID  | Availability |
 +--------------------------------------+---------------+--------------+
 +--------------------------------------+---------------+--------------+
+`
 
 ## Subsequent 
 After that, a config file is placed in ~/.qsclicreds where it stores this info, so subsequent usage is simple:
+
+`
  > python main.py list
+`
 
 ## Flow
+`
  > python main.py list
 +----------------------------------------------------------+---------------+
 | Blueprint Name    | Blueprint ID                         | Availability  |
@@ -48,3 +56,5 @@ After that, a config file is placed in ~/.qsclicreds where it stores this info, 
 
  > python main.py start -i 72c8bd21-0191-48bb-bb9a-02e8b9e452f6
 Started 9d8b0e55-6fc2-41fb-8e00-ce6c0049c4b5
+`
+
