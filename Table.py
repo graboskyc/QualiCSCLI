@@ -34,7 +34,7 @@ class Table:
 		for s,n in zip(self.sizes, names):
 			if len(str(n)) > s:
 				self.sizes[i] = len(str(n))
-				i+=1
+			i+=1
 
 	def Clear(self):
 		self.sizes = []
