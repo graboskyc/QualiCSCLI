@@ -11,7 +11,7 @@ This repo is a simple work in progress to make it easy to see available blueprin
     CLI Tool for Quali CloudShell Sandboxes
     
     positional arguments:
-      task        start, list, or publish
+      task        start, list, running, or publish
     
     optional arguments:
       -h, --help  show this help message and exit
@@ -50,4 +50,11 @@ After that, a config file is placed in ~/.qsclicreds where it stores this info, 
     
      > python main.py start -i 72c8bd21-0191-48bb-bb9a-02e8b9e452f6
     Started 9d8b0e55-6fc2-41fb-8e00-ce6c0049c4b5
+
+     > python main.py running
+    +--------------------------------------+--------------+----------------+--------+
+    | Sandbox ID                           | Sandbox Name | From Blueprint | Status |
+    +--------------------------------------+--------------+----------------+--------+
+    | 9d8b0e55-6fc2-41fb-8e00-ce6c0049c4b5 | From CLI     | Example        | Ready  |
+    +--------------------------------------+--------------+----------------+--------+
 
