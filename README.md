@@ -23,6 +23,7 @@ This repo is a simple work in progress to make it easy to see available blueprin
       -o OUTFILE  name of script in portal
       -i ID       sandbox/blueprint id
       -l LENGTH   sandbox duration length in min. Default is 30
+      -w, --wait  wait until sandbox is completed until script returns
     
 # Sample
 ## First Time
