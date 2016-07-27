@@ -7,6 +7,8 @@ import time
 import json
 from Table import Table
 from ConfigParser import SafeConfigParser
+import time
+from sys import stdout
 
 # Build CLI parser to get info. Should be passed in via CLI from PHP
 parser = argparse.ArgumentParser(description='CLI Tool for Quali CloudShell Sandboxes')
@@ -16,12 +18,15 @@ parser.add_argument('-u', action="store", dest="un", help="username for API sess
 parser.add_argument('-p', action="store", dest="pw", help="password for API session")
 parser.add_argument('-d', action="store", dest="dom", help="domain for API session")
 # possibilities
-parser.add_argument('task', metavar='task', help="start, list, or publish")
+parser.add_argument('task', metavar='task', help="start, list, running, or publish")
 parser.add_argument('-s', action="store", dest="infile", help="in python script")
 parser.add_argument('-o', action="store", dest="outfile", help="name of script in portal")
 parser.add_argument('-i', action="store", dest="id", help="sandbox/blueprint id")
 parser.add_argument('-l', action="store", dest="length", help="sandbox duration length in min. Default is 30")
 parser.add_argument('-n', action="store", dest="name", help="Name of sandbox to be given. Default is From CLI")
+# flags
+parser.add_argument("-w", "--wait", help="wait until sandbox is completed until script returns", action="store_true")
+
 arg = parser.parse_args()
 
 # functions for writing files, creating the zip
@@ -144,6 +149,22 @@ elif ((arg.task == "start") or (arg.task == "run")):
         sbsrobj = json.loads(sbsr.text)
 
         sandboxID = sbsrobj["id"]
+
+	# wait to see if done
+	if arg.wait:
+		stdout.write("Starting sandbox and waiting for it to come up")
+		stdout.flush()
+		URI = QSHost+"/api/v1/sandboxes/"+sandboxID
+		sbstate = "unknown"
+		while (("Active" not in sbstate) and ("Ready" not in sbstate) and ("Error" not in sbstate)):
+			sbsr = requests.get(URI, headers=headers, verify=False)
+			sbrobj = json.loads(sbsr.text)
+			sbstate = sbrobj["state"]
+			stdout.write(".")
+			stdout.flush()
+			time.sleep(10)
+		stdout.write("\n") 
+		print
 
 	print "\nStarted " + sandboxID + "\n"
 
