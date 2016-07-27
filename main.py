@@ -47,6 +47,11 @@ def authRest(host, un, pw, dom):
         headers = {"Content-Type":"application/json"}
         ar = requests.put(URI, data=json.dumps(auth), headers=headers, verify=False)
         token = str(ar.content).replace('"','')
+	if ("Login failed for user" in str(token)):
+		print
+		print "Your authentication credentials to the server were bad"
+		print
+		exit(1)
 	return token
 
 
