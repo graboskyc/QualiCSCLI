@@ -48,4 +48,6 @@ Temporary Items
 
 
 *.pyc
-QualiCSCLI.egg-info
+QualiCSCLI.egg-info/*
+build/*
+dist/*
