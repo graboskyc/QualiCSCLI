@@ -2,9 +2,13 @@
 This repo is a simple work in progress to make it easy to see available blueprints on a CloudShell system and start those blueprints easily, all via the CLI with a simple syntax.
 
 # Installation
+## From Source
 * Download the repository somewhere
 * CD to that directory
 * Run `pip --editable .`
+
+## From PyPi
+* Run `pip install QualiCSCLI`
 
 # Usage
      > QualiCSCLI help
