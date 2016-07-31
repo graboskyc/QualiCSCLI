@@ -5,7 +5,7 @@ This repo is a simple work in progress to make it easy to see available blueprin
 ## From Source
 * Download the repository somewhere
 * CD to that directory
-* Run `pip --editable .`
+* Run `pip install --editable .`
 
 ## From PyPi
 * Run `pip install QualiCSCLI`

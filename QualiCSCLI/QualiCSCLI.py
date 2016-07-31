@@ -9,6 +9,7 @@ from Table import Table
 from ConfigParser import SafeConfigParser
 import time
 from sys import stdout
+from os.path import expanduser
 
 # functions for writing files, creating the zip
 def zipdir(path, ziph):
@@ -37,7 +38,7 @@ def authRest(host, un, pw, dom):
 
 def cli():
 	# Build CLI parser to get info. Should be passed in via CLI from PHP
-	parser = argparse.ArgumentParser(description='CLI Tool for Quali CloudShell Sandboxes')
+	parser = argparse.ArgumentParser(description='CLI Tool for Quali CloudShell Sandboxes v0.5')
 	# creds
 	parser.add_argument('-q', action="store", dest="host", help="server hostname for API session")
 	parser.add_argument('-u', action="store", dest="un", help="username for API session")
@@ -54,6 +55,15 @@ def cli():
 	parser.add_argument("-w", "--wait", help="wait until sandbox is completed until script returns", action="store_true")
 	
 	arg = parser.parse_args()
+
+	phrases = {}
+	phrases["start"] = ["start","run"]
+	phrases["list"] = ["list","ps","blueprint","blueprints"]
+	phrases["running"] = ["running","ps","sandboxes","sandbox"]
+	phrases["publish"] = ["publish","upload"]
+	phrases["stop"] = ["stop","end","kill","rm","rmi"]
+
+	homedir = expanduser("~")
 	
 	if ((arg.host != None) and (arg.un != None) and (arg.pw != None) and (arg.dom != None)):
 		QSHost = arg.host
@@ -68,12 +78,12 @@ def cli():
 		cp.set('quali', 'pw', QSPw)
 		cp.set('quali', 'dom', QSDom)
 		
-		with open(os.environ['HOME']+"/.qsclicreds", 'wb') as configfile:
+		with open(homedir+"/.qsclicreds", 'wb') as configfile:
 			cp.write(configfile)
 	
-	elif (os.path.isfile(os.environ['HOME']+"/.qsclicreds")):
+	elif (os.path.isfile(homedir+"/.qsclicreds")):
 		cp = SafeConfigParser()
-		cp.read(os.environ['HOME']+"/.qsclicreds")
+		cp.read(homedir+"/.qsclicreds")
 		QSHost = cp.get('quali', 'host')
 		QSUn = cp.get('quali', 'un')
 		QSPw = cp.get('quali', 'pw')
@@ -83,7 +93,7 @@ def cli():
 		parser.print_help()
 		exit(4)
 	
-	if (arg.task == "list"):
+	if (arg.task in phrases["list"]):
 		# authentication
 		token = authRest(QSHost, QSUn, QSPw, QSDom)
 	
@@ -106,7 +116,7 @@ def cli():
 	
 		tbl.Draw()
 	
-	elif (arg.task == "running"):
+	elif (arg.task in phrases["running"]):
 		token = authRest(QSHost, QSUn, QSPw, QSDom)
 	
 		headers = {}
@@ -126,7 +136,7 @@ def cli():
 	
 		tbl.Draw()
 	
-	elif ((arg.task == "start") or (arg.task == "run")):
+	elif (arg.task in phrases["start"]):
 		token = authRest(QSHost, QSUn, QSPw, QSDom)
 	
 		headers = {}
@@ -173,7 +183,7 @@ def cli():
 	
 		print "\nStarted " + sandboxID + "\n"
 	
-	elif (arg.task == "stop"):
+	elif (arg.task in phrases["stop"]):
 		token = authRest(QSHost, QSUn, QSPw, QSDom)
 	
 		headers = {}
@@ -187,7 +197,7 @@ def cli():
 		print "\nStopped " + arg.id + "\n"
 	
 	
-	elif (arg.task == "publish"):
+	elif (arg.task in phrases["publish"]):
 		# temp directory
 		filename = "QS_PkgFile"+arg.outfile+"_"+str(random.randint(0,9999999))
 		folder = "./"+filename
