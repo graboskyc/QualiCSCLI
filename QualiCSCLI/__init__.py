@@ -38,7 +38,7 @@ def authRest(host, un, pw, dom):
 
 def cli():
 	# Build CLI parser to get info. Should be passed in via CLI from PHP
-	parser = argparse.ArgumentParser(description='CLI Tool for Quali CloudShell Sandboxes v0.5')
+	parser = argparse.ArgumentParser(description='CLI Tool for Quali CloudShell Sandboxes v0.7')
 	# creds
 	parser.add_argument('-q', action="store", dest="host", help="server hostname for API session")
 	parser.add_argument('-u', action="store", dest="un", help="username for API session")
@@ -58,7 +58,7 @@ def cli():
 
 	phrases = {}
 	phrases["start"] = ["start","run"]
-	phrases["list"] = ["list","ps","blueprint","blueprints"]
+	phrases["list"] = ["list","blueprint","blueprints"]
 	phrases["running"] = ["running","ps","sandboxes","sandbox"]
 	phrases["publish"] = ["publish","upload"]
 	phrases["stop"] = ["stop","end","kill","rm","rmi"]
