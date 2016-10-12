@@ -3,6 +3,7 @@ import random
 import zipfile
 import argparse
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import time
 import json
 from Table import Table
@@ -27,6 +28,7 @@ def authRest(host, un, pw, dom):
         URI = host+"/api/login"
         auth = {"username":un,"password":pw,"domain":dom}
         headers = {"Content-Type":"application/json"}
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         ar = requests.put(URI, data=json.dumps(auth), headers=headers, verify=False)
         token = str(ar.content).replace('"','')
 	if ("Login failed for user" in str(token)):
@@ -64,6 +66,8 @@ def cli():
 	phrases["stop"] = ["stop","end","kill","rm","rmi"]
 
 	homedir = expanduser("~")
+    
+	requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 	
 	if ((arg.host != None) and (arg.un != None) and (arg.pw != None) and (arg.dom != None)):
 		QSHost = arg.host
@@ -125,8 +129,16 @@ def cli():
 		headers["Authorization"] = "Basic "+token
 	
 		URI = QSHost+"/api/v1/sandboxes"
-	
+
 		sbsr = requests.get(URI, headers=headers, verify=False)
+		sbrobj = json.loads(sbsr.text)
+	
+		tbl = Table()
+		tbl.AddHeader(["Sandbox ID","Sandbox Name", "From Blueprint", "Status"])
+		for sandbox in sbrobj:
+			tbl.AddRow([sandbox["id"] , sandbox["name"], sandbox["blueprint"]["name"], sandbox["state"]])
+	
+		tbl.Draw().get(URI, headers=headers, verify=False)
 		sbrobj = json.loads(sbsr.text)
 	
 		tbl = Table()
