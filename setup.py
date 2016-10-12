@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name='QualiCSCLI',
-	version='0.7',
+	version='0.8.2',
 	py_modules=['QualiCSCLI'],
 	packages=find_packages(),
 	install_requires=['requests',],
